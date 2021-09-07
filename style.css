@@ -26,11 +26,11 @@ body {
 .header__play {
   font-size: 28px;
   padding: 10px;
-  /* margin-top: 0; */
   background-color: beige;
   color: orange;
   border: solid orange 5px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .header__timer {
@@ -47,9 +47,27 @@ body {
   margin-right: 10px;
 }
 
-.header__score {
+.header__remain {
   padding: 10px;
   background-color: beige;
   border: solid orange 5px;
   border-radius: 10px;
+}
+
+.main {
+  height: 270px;
+  margin-top: 165px;
+  border: solid white;
+}
+
+.bug,
+.carrot {
+  position: absolute;
+  transition: transform 300ms ease-in;
+}
+
+/*왜 안돼!??*/
+.bug:hover,
+.carrot:hover {
+  transform: scale(1.1);
 }
