@@ -67,7 +67,31 @@ body {
 }
 
 /*왜 안돼!??*/
-.bug:hover,
 .carrot:hover {
   transform: scale(1.1);
+}
+.bug:hover {
+  transform: scale(1.1);
+}
+
+.redo {
+  visibility: hidden;
+  position: absolute;
+  margin: 80px 200px;
+  text-align: center;
+  z-index: 1;
+  width: 500px;
+  height: 220px;
+  background: rgba(240, 196, 140, 0.8);
+  border-radius: 20px;
+}
+
+.redo i {
+  opacity: 1;
+  font-size: 35px;
+  background-color: beige;
+  padding: 5px;
+  border: 5px solid orange;
+  border-radius: 10px;
+  cursor: pointer;
 }
