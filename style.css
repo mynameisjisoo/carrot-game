@@ -23,7 +23,7 @@ body {
   font-size: 25px;
 }
 
-.header__play {
+.header__button {
   font-size: 28px;
   padding: 10px;
   background-color: beige;
@@ -32,6 +32,10 @@ body {
   border-radius: 10px;
   cursor: pointer;
 }
+
+/* .pause {
+  background-color: blueviolet;
+} */
 
 .header__timer {
   font-size: 25px;
@@ -64,6 +68,7 @@ body {
 .carrot {
   position: absolute;
   transition: transform 300ms ease-in;
+  /* visibility: hidden; */
 }
 
 /*왜 안돼!??*/
