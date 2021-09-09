@@ -68,7 +68,6 @@ body {
 .carrot {
   position: absolute;
   transition: transform 300ms ease-in;
-  /* visibility: hidden; */
 }
 
 /*왜 안돼!??*/

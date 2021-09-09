@@ -18,17 +18,19 @@ function handlePlayBtn() {
 }
 
 headerBtn.addEventListener('click', () => {
-  countDown();
+  handlePlayBtn();
+  makeTarget();
+  // countDown();
 });
 
 function countDown() {
-  let remainTime = 10;
   let timer;
+  let remainTime = 10;
 
   function showRemaining() {
     if (remainTime === 0) {
       clearInterval(timer); //함수 멈춤
-      alert('타이머 종료'); //시간종료하면 나오는 창 띄우기
+      // alert('타이머 종료'); //시간종료하면 나오는 창
       return;
     }
     remainTime--;
@@ -37,10 +39,7 @@ function countDown() {
   timer = setInterval(showRemaining, 1000); //1초에 한번 함수 실행
 }
 
-function show
-
-
-makeTarget();
+// function whenLose
 
 function gamePlay() {
   for (let i = 0; i < 7; i++) {
@@ -55,7 +54,6 @@ function gamePlay() {
 }
 
 function changeArrangement(element) {
-  // console.log(element);
   if (element.dataset.bug) {
     let randomX = Math.floor(Math.random() * 770);
     let randomY = Math.floor(Math.random() * 220);
@@ -65,30 +63,30 @@ function changeArrangement(element) {
       let randomX = Math.floor(Math.random() * 760);
       let randomY = Math.floor(Math.random() * 185);
       element.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      element.style.visibility = '';
+      // element.style.visibility = '';
     }
   }
 }
 
 function makeTarget() {
-  for (let i = 0; i < 7; i++) {
-    const element = document.createElement('img');
-    element.setAttribute('class', 'bug');
-    element.setAttribute('src', './img/bug.png');
-    element.setAttribute('data-bug', i);
+  // console.log(document.querySelectorAll('.bug').length);
+  if (document.querySelectorAll('.bug').length < 7) {
+    for (let i = 0; i < 7; i++) {
+      const element = document.createElement('img');
+      element.setAttribute('class', 'bug');
+      element.setAttribute('src', './img/bug.png');
+      element.setAttribute('data-bug', i);
 
-    let randomX = Math.floor(Math.random() * 770);
-    let randomY = Math.floor(Math.random() * 220);
-    element.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      let randomX = Math.floor(Math.random() * 770);
+      let randomY = Math.floor(Math.random() * 220);
+      element.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
-    main.appendChild(element);
-    // changeArrangement(element, i);
-    // let bugTarget = document.querySelector(`.bug[data-bug="${i}"]`);
-
-    // bugTarget.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      main.appendChild(element);
+    }
   }
-
-  for (let i = 0; i < 10; i++) {
+  const carrotCnt = document.querySelectorAll('.carrot').length;
+  const forCnt = 10 - carrotCnt; // 당근갯수 세서 모자란 갯수만큼만 만들도록
+  for (let i = 0; i < forCnt; i++) {
     const element = document.createElement('img');
     element.setAttribute('class', 'carrot');
     element.setAttribute('src', './img/carrot.png');
@@ -101,10 +99,9 @@ function makeTarget() {
     let carrotTarget = document.querySelector(`.carrot[data-carrot="${i}"]`);
 
     carrotTarget.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    main.appendChild(carrotTarget);
   }
 }
-
-
 
 let carrotCnt = 10;
 remain.innerText = carrotCnt;
@@ -130,5 +127,7 @@ main.addEventListener('click', event => {
 });
 
 function lose(carrotCnt) {
-  alert(`${carrotCnt}남았다`);
+  redo.innerText = `YOU LOSE👎
+  ${carrotCnt}carrots left`;
+  redo.style.visibility = '';
 }
