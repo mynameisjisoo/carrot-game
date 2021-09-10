@@ -5,7 +5,14 @@ const main = document.querySelector('.main');
 const headerBtn = document.querySelector('.header__button');
 const headerTimer = document.querySelector('.header__timer');
 const remain = document.querySelector('.header__remain');
-const redo = document.querySelector('.redo');
+const resultBox = document.querySelector('.div__result');
+
+let carrotCnt = 10;
+remain.innerText = carrotCnt;
+
+headerBtn.addEventListener('click', () => {
+  countDown();
+});
 
 function handlePlayBtn() {
   headerBtn.classList.toggle('pause');
@@ -17,29 +24,24 @@ function handlePlayBtn() {
   }
 }
 
-headerBtn.addEventListener('click', () => {
-  handlePlayBtn();
-  makeTarget();
-  // countDown();
-});
-
 function countDown() {
   let timer;
   let remainTime = 10;
+  handlePlayBtn();
+  makeTarget();
+  gamePlay();
 
   function showRemaining() {
-    if (remainTime === 0) {
+    if (remainTime === 0 || carrotCnt === 0 || isBugClicked) {
       clearInterval(timer); //함수 멈춤
-      // alert('타이머 종료'); //시간종료하면 나오는 창
+
       return;
     }
     remainTime--;
-    headerTimer.innerText = `00:${remainTime}`;
+    headerTimer.innerText = `${remainTime}`;
   }
   timer = setInterval(showRemaining, 1000); //1초에 한번 함수 실행
 }
-
-// function whenLose
 
 function gamePlay() {
   for (let i = 0; i < 7; i++) {
@@ -63,30 +65,30 @@ function changeArrangement(element) {
       let randomX = Math.floor(Math.random() * 760);
       let randomY = Math.floor(Math.random() * 185);
       element.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      // element.style.visibility = '';
+      element.style.visibility = 'visible';
     }
+    carrotCnt = 10;
+    remain.innerText = carrotCnt;
   }
 }
 
 function makeTarget() {
-  // console.log(document.querySelectorAll('.bug').length);
-  if (document.querySelectorAll('.bug').length < 7) {
-    for (let i = 0; i < 7; i++) {
-      const element = document.createElement('img');
-      element.setAttribute('class', 'bug');
-      element.setAttribute('src', './img/bug.png');
-      element.setAttribute('data-bug', i);
+  if (document.querySelectorAll('.bug').length > 0) return;
+  for (let i = 0; i < 7; i++) {
+    const element = document.createElement('img');
+    element.setAttribute('class', 'bug');
+    element.setAttribute('src', './img/bug.png');
+    element.setAttribute('data-bug', i);
 
-      let randomX = Math.floor(Math.random() * 770);
-      let randomY = Math.floor(Math.random() * 220);
-      element.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    let randomX = Math.floor(Math.random() * 770);
+    let randomY = Math.floor(Math.random() * 220);
+    element.style.transform = `translate(${randomX}px, ${randomY}px)`;
 
-      main.appendChild(element);
-    }
+    main.appendChild(element);
   }
   const carrotCnt = document.querySelectorAll('.carrot').length;
-  const forCnt = 10 - carrotCnt; // 당근갯수 세서 모자란 갯수만큼만 만들도록
-  for (let i = 0; i < forCnt; i++) {
+  if (carrotCnt > 0) return;
+  for (let i = 0; i < 10; i++) {
     const element = document.createElement('img');
     element.setAttribute('class', 'carrot');
     element.setAttribute('src', './img/carrot.png');
@@ -103,16 +105,14 @@ function makeTarget() {
   }
 }
 
-let carrotCnt = 10;
-remain.innerText = carrotCnt;
-
+let isBugClicked = false;
 main.addEventListener('click', event => {
   const bug = event.target.dataset.bug;
   const carrot = event.target.dataset.carrot;
 
   if (bug) {
-    console.log('you lose');
-    lose(carrotCnt);
+    showResult('lose', carrotCnt);
+    isBugClicked = true;
   } else if (carrot) {
     carrotCnt--;
     remain.innerText = carrotCnt;
@@ -121,13 +121,40 @@ main.addEventListener('click', event => {
     );
     clickedCarrot.style.visibility = 'hidden';
     if (carrotCnt === 0) {
-      alert('끝!');
+      showResult('win', carrotCnt);
     }
   }
 });
 
-function lose(carrotCnt) {
-  redo.innerText = `YOU LOSE👎
-  ${carrotCnt}carrots left`;
-  redo.style.visibility = '';
+function showResult(result, carrotCnt) {
+  const resultMessage = document.querySelector('.result-message');
+  if (result === 'lose') {
+    handlePlayBtn();
+    resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
+    ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOSE 👎`;
+    resultBox.style.visibility = 'visible';
+    return;
+  } else if (result === 'win') {
+    handlePlayBtn();
+    resultMessage.innerText = `🎉 ${carrotCnt} carrots left 🎉  
+    ${'\u00a0\u00a0\u00a0\u00a0'} YOU WIN ! 👍`; //공백처리
+
+    resultBox.style.visibility = 'visible';
+    return;
+  } else if (result === null) {
+    handlePlayBtn();
+
+    resultMessage.innerText = `🧡
+    RETRY?`; //공백처리
+    resultBox.style.visibility = 'visible';
+    return;
+  }
 }
+
+const redoBtn = document.querySelector('.div__result').querySelector('i');
+redoBtn.addEventListener('click', event => {
+  resultBox.style.visibility = 'hidden';
+  handlePlayBtn();
+  makeTarget();
+  gamePlay();
+});
