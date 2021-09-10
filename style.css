@@ -4,6 +4,7 @@
 
 body {
   background-color: black;
+  font-family: fantasy;
 }
 
 .container {
@@ -25,6 +26,7 @@ body {
 
 .header__button {
   font-size: 28px;
+  width: 60px;
   padding: 10px;
   background-color: beige;
   color: orange;
@@ -33,12 +35,9 @@ body {
   cursor: pointer;
 }
 
-/* .pause {
-  background-color: blueviolet;
-} */
-
 .header__timer {
   font-size: 25px;
+  width: 200px;
   background-color: beige;
   padding: 10px 10px;
   margin: 10px 15px;
@@ -61,7 +60,6 @@ body {
 .main {
   height: 270px;
   margin-top: 165px;
-  border: solid white;
 }
 
 .bug,
@@ -78,19 +76,20 @@ body {
   transform: scale(1.1);
 }
 
-.redo {
+.div__result {
   visibility: hidden;
   position: absolute;
   margin: 80px 200px;
   text-align: center;
   z-index: 1;
   width: 500px;
-  height: 220px;
+  height: 200px;
   background: rgba(240, 196, 140, 0.8);
   border-radius: 20px;
 }
 
-.redo i {
+.div__result i {
+  margin: 15px 0px 15px 0px;
   opacity: 1;
   font-size: 35px;
   background-color: beige;
@@ -98,4 +97,8 @@ body {
   border: 5px solid orange;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.result-message {
+  font-size: 35px;
 }
