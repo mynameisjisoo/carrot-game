@@ -37,7 +37,6 @@ body {
 
 .header__timer {
   font-size: 25px;
-  width: 200px;
   background-color: beige;
   padding: 10px 10px;
   margin: 10px 15px;
@@ -48,6 +47,10 @@ body {
 .header__timer i {
   color: orange;
   margin-right: 10px;
+}
+.timer-display {
+  display: inline-block;
+  width: 30px;
 }
 
 .header__remain {
@@ -69,10 +72,10 @@ body {
 }
 
 /*왜 안돼!??*/
-.carrot:hover {
+.carrot[data-carrot]:hover {
   transform: scale(1.1);
 }
-.bug:hover {
+.bug[data-bug]:hover {
   transform: scale(1.1);
 }
 

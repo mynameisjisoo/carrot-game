@@ -10,71 +10,64 @@ const bgm = new Audio('./sound/bg.mp3');
 let carrotCnt = 10;
 remain.innerText = carrotCnt;
 
-headerBtn.addEventListener('click', () => {
+headerBtn.addEventListener('click', event => {
   bgm.play();
   bgm.loop = true;
-  init();
+  console.log(event.target);
+  console.log(event.target.dataset.state);
+  if (!event.target.dataset.state) {
+    console.log('headerBtn');
+    init();
+  } else if (event.target.dataset.state === 'pause') {
+    console.log('stop');
+    clearInterval(timer);
+    handlePlayBtn();
+    showResult('retry');
+  } else if (event.target.dataset.state === 'play') {
+    console.log('play');
+    clearInterval(timer);
+    handlePlayBtn();
+  }
 });
 
 function handlePlayBtn() {
   headerBtn.classList.toggle('pause');
   const pauseBtn = document.querySelector('.pause');
   if (pauseBtn) {
-    pauseBtn.innerHTML = `<i class="fas fa-stop"></i>`;
-    // showResult('retry');
+    pauseBtn.innerHTML = `<i class="fas fa-stop" data-state="pause"></i>`;
+    headerBtn.setAttribute('data-state', 'pause');
   } else {
-    headerBtn.innerHTML = `<i class="fas fa-play"></i>`;
+    headerBtn.innerHTML = `<i class="fas fa-play" data-state="play"></i>`;
+    headerBtn.setAttribute('data-state', 'play');
   }
 }
 
-function countDown() {
-  let timer;
-  let remainTime = 10;
+let timer;
+function countDown(remainTime) {
+  const timer_display = document.querySelector('.timer-display');
+  timer_display.innerText = `${remainTime}`;
 
   function showRemaining() {
     if (remainTime === 0 || carrotCnt === 0 || isBugClicked) {
-      //토글버튼 눌렀을때????????
+      isBugClicked = false;
       clearInterval(timer); //함수 멈춤
-
+      if (carrotCnt != 0) showResult('lose', carrotCnt);
       return;
     }
     remainTime--;
-    headerTimer.innerText = `${remainTime}`;
+    timer_display.innerText = `${remainTime}`;
   }
   timer = setInterval(showRemaining, 1000); //1초에 한번 함수 실행
 }
 
-function gamePlay() {
-  for (let i = 0; i < 7; i++) {
-    const bug = document.querySelector(`.bug[data-bug="${i}"]`);
-    changeArrangement(bug);
-  }
-
-  for (let i = 0; i < 10; i++) {
-    const carrot = document.querySelector(`.carrot[data-carrot="${i}"]`);
-    changeArrangement(carrot);
-  }
-}
-
-function changeArrangement(element) {
-  if (element.dataset.bug) {
-    let randomX = Math.floor(Math.random() * 770);
-    let randomY = Math.floor(Math.random() * 220);
-    element.style.transform = `translate(${randomX}px, ${randomY}px)`;
-  } else if (element.dataset.carrot) {
-    for (let i = 0; i < 10; i++) {
-      let randomX = Math.floor(Math.random() * 760);
-      let randomY = Math.floor(Math.random() * 185);
-      element.style.transform = `translate(${randomX}px, ${randomY}px)`;
-      element.style.visibility = 'visible';
-    }
-    carrotCnt = 10;
-    remain.innerText = carrotCnt;
-  }
-}
-
 function makeTarget() {
-  if (document.querySelectorAll('.bug').length > 0) return;
+  //남은 자식 노드 지우고 새로 그리기
+  while (main.hasChildNodes()) {
+    main.removeChild(main.firstChild);
+  }
+  carrotCnt = 10;
+  remain.innerText = carrotCnt;
+
   for (let i = 0; i < 7; i++) {
     const element = document.createElement('img');
     element.setAttribute('class', 'bug');
@@ -87,8 +80,6 @@ function makeTarget() {
 
     main.appendChild(element);
   }
-  const carrotCnt = document.querySelectorAll('.carrot').length;
-  if (carrotCnt > 0) return;
   for (let i = 0; i < 10; i++) {
     const element = document.createElement('img');
     element.setAttribute('class', 'carrot');
@@ -114,9 +105,9 @@ main.addEventListener('click', event => {
   const audio_carrot = new Audio('./sound/carrot_pull.mp3');
   if (bug) {
     showResult('lose', carrotCnt);
+    handlePlayBtn();
     audio_bug.play();
     bgm.pause();
-
     isBugClicked = true;
   } else if (carrot) {
     audio_carrot.play();
@@ -125,8 +116,9 @@ main.addEventListener('click', event => {
     const clickedCarrot = document.querySelector(
       `.carrot[data-carrot="${carrot}"]`
     );
-    clickedCarrot.style.visibility = 'hidden';
+    clickedCarrot.remove();
     if (carrotCnt === 0) {
+      handlePlayBtn();
       showResult('win', carrotCnt);
     }
   }
@@ -134,41 +126,34 @@ main.addEventListener('click', event => {
 
 function showResult(result, carrotCnt) {
   const resultMessage = document.querySelector('.result-message');
+
   headerBtn.style.visibility = 'hidden';
+  resultBox.style.visibility = 'visible';
   if (result === 'lose') {
-    handlePlayBtn();
     resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
     ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOSE 👎`;
-    resultBox.style.visibility = 'visible';
     return;
   } else if (result === 'win') {
-    handlePlayBtn();
     const audio_win = new Audio('./sound/game_win.mp3');
     audio_win.play();
     bgm.pause();
     resultMessage.innerText = `🎉You find all carrots🎉  
     ${'\u00a0\u00a0\u00a0'} YOU WIN ! 👍`; //공백처리
-
-    resultBox.style.visibility = 'visible';
     return;
-  }
-  //이거 안됨
-  else if (result === 'retry') {
-    //alert비지엠 넣기
-    handlePlayBtn();
-
+  } else if (result === 'retry') {
+    bgm.pause();
+    const audio_alert = new Audio('./sound/alert.wav');
+    audio_alert.play();
     resultMessage.innerText = `🧡
     RETRY?`;
-    resultBox.style.visibility = 'visible';
     return;
   }
 }
 function init() {
   headerBtn.style.visibility = 'visible';
-  countDown();
+  countDown(10);
   handlePlayBtn();
   makeTarget();
-  gamePlay();
 }
 
 const redoBtn = document.querySelector('.div__result').querySelector('i');
