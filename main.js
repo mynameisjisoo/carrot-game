@@ -13,18 +13,14 @@ remain.innerText = carrotCnt;
 headerBtn.addEventListener('click', event => {
   bgm.play();
   bgm.loop = true;
-  console.log(event.target);
-  console.log(event.target.dataset.state);
+
   if (!event.target.dataset.state) {
-    console.log('headerBtn');
     init();
   } else if (event.target.dataset.state === 'pause') {
-    console.log('stop');
     clearInterval(timer);
     handlePlayBtn();
     showResult('retry');
   } else if (event.target.dataset.state === 'play') {
-    console.log('play');
     clearInterval(timer);
     handlePlayBtn();
   }
@@ -129,6 +125,7 @@ function showResult(result, carrotCnt) {
 
   headerBtn.style.visibility = 'hidden';
   resultBox.style.visibility = 'visible';
+  main.style.poinerEvents = 'none'; //수정해야됨
   if (result === 'lose') {
     resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
     ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOSE 👎`;
