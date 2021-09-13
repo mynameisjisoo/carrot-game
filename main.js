@@ -128,14 +128,14 @@ function showResult(result, carrotCnt) {
   main.style.pointerEvents = 'none';
   if (result === 'lose') {
     resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
-    ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOSE 👎`;
+    ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOST 👎`;
     return;
   } else if (result === 'win') {
     const audio_win = new Audio('./sound/game_win.mp3');
     audio_win.play();
     bgm.pause();
-    resultMessage.innerText = `🎉You find all carrots🎉  
-    ${'\u00a0\u00a0\u00a0'} YOU WIN ! 👍`; //공백처리
+    resultMessage.innerText = `🎉You found all the carrots🎉  
+    ${'\u00a0\u00a0\u00a0'} YOU WON ! 👍`; //공백처리
     return;
   } else if (result === 'retry') {
     bgm.pause();
