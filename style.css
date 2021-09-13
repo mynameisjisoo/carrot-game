@@ -72,7 +72,10 @@ body {
 }
 
 /*왜 안돼!??*/
-.carrot[data-carrot]:hover {
+.bug {
+  transition: transform 300ms ease-in;
+}
+.carrot:hover {
   transform: scale(1.1);
 }
 .bug[data-bug]:hover {

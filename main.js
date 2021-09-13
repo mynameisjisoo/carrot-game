@@ -125,7 +125,7 @@ function showResult(result, carrotCnt) {
 
   headerBtn.style.visibility = 'hidden';
   resultBox.style.visibility = 'visible';
-  main.style.poinerEvents = 'none'; //수정해야됨
+  main.style.pointerEvents = 'none';
   if (result === 'lose') {
     resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
     ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOSE 👎`;
@@ -148,6 +148,7 @@ function showResult(result, carrotCnt) {
 }
 function init() {
   headerBtn.style.visibility = 'visible';
+  main.style.pointerEvents = 'auto';
   countDown(10);
   handlePlayBtn();
   makeTarget();
