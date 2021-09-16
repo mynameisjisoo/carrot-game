@@ -22,14 +22,14 @@ let timer;
 
 headerBtn.addEventListener('click', event => {
   soundPlay(bgSound);
-
-  if (!event.target.dataset.state) {
+  const btnState = event.target.dataset.state;
+  if (!btnState) {
     init();
-  } else if (event.target.dataset.state === 'pause') {
+  } else if (btnState === 'pause') {
     clearInterval(timer);
     handlePlayBtn();
     showResult('retry');
-  } else if (event.target.dataset.state === 'play') {
+  } else if (btnState === 'play') {
     clearInterval(timer);
     handlePlayBtn();
   }
@@ -72,63 +72,34 @@ function makeTarget() {
   carrotCnt = 10;
   remain.innerText = carrotCnt;
 
-  for (let i = 0; i < 7; i++) {
-    const element = document.createElement('img');
-    element.setAttribute('class', 'bug');
-    element.setAttribute('src', './img/bug.png');
-    element.setAttribute('data-bug', i);
+  addItem(10, 'carrot', './img/carrot.png');
+  addItem(10, 'bug', './img/bug.png');
+}
 
-    let randomX = Math.floor(Math.random() * 770);
-    let randomY = Math.floor(Math.random() * 220);
-    element.style.transform = `translate(${randomX}px, ${randomY}px)`;
-
-    main.appendChild(element);
-  }
-  for (let i = 0; i < 10; i++) {
-    const element = document.createElement('img');
-    element.setAttribute('class', 'carrot');
-    element.setAttribute('src', './img/carrot.png');
-    element.setAttribute('data-carrot', i);
-    main.appendChild(element);
-
+function addItem(count, className, imgPath) {
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement('img');
+    item.setAttribute('class', className);
+    item.setAttribute('src', imgPath);
     let randomX = Math.floor(Math.random() * 760);
     let randomY = Math.floor(Math.random() * 185);
-
-    let carrotTarget = document.querySelector(`.carrot[data-carrot="${i}"]`);
-
-    carrotTarget.style.transform = `translate(${randomX}px, ${randomY}px)`;
-    main.appendChild(carrotTarget);
+    item.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    main.appendChild(item);
   }
-
-  // function addItem(count, className, imgPath) {
-  //   for (let i = 0; i < count; i++) {
-  //     const item = document.createElement('img');
-  //     item.setAttribute('class', className);
-  //     item.setAttribute('src', imgPath);
-  //     let randomX = Math.floor(Math.random() * 760);
-  //     let randomY = Math.floor(Math.random() * 185);
-  //     item.style.transform = `translate(${randomX}px, ${randomY}px)`;
-  //     main.appendChild(item);
-  //   }
-  // }
 }
 
 main.addEventListener('click', event => {
-  const bug = event.target.dataset.bug;
-  const carrot = event.target.dataset.carrot;
-  if (bug) {
+  const target = event.target;
+  if (target.matches('.bug')) {
     showResult('lose', carrotCnt);
     handlePlayBtn();
     soundPlay(bugSound);
     isBugClicked = true;
-  } else if (carrot) {
+  } else if (target.matches('.carrot')) {
     soundPlay(carrotSound);
     carrotCnt--;
     remain.innerText = carrotCnt;
-    const clickedCarrot = document.querySelector(
-      `.carrot[data-carrot="${carrot}"]`
-    );
-    clickedCarrot.remove();
+    target.remove();
     if (carrotCnt === 0) {
       handlePlayBtn();
       showResult('win', carrotCnt);
@@ -138,7 +109,6 @@ main.addEventListener('click', event => {
 
 function showResult(result, carrotCnt) {
   const resultMessage = document.querySelector('.result-message');
-
   headerBtn.style.visibility = 'hidden';
   resultBox.style.visibility = 'visible';
   main.style.pointerEvents = 'none';
