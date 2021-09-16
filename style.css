@@ -71,14 +71,8 @@ body {
   transition: transform 300ms ease-in;
 }
 
-/*왜 안돼!??*/
-.bug {
-  transition: transform 300ms ease-in;
-}
-.carrot:hover {
-  transform: scale(1.1);
-}
-.bug[data-bug]:hover {
+.carrot:hover,
+.bug:hover {
   transform: scale(1.1);
 }
 

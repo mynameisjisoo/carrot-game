@@ -6,13 +6,22 @@ const headerBtn = document.querySelector('.header__button');
 const headerTimer = document.querySelector('.header__timer');
 const remain = document.querySelector('.header__remain');
 const resultBox = document.querySelector('.div__result');
-const bgm = new Audio('./sound/bg.mp3');
+
+const bgSound = new Audio('./sound/bg.mp3');
+const winSound = new Audio('./sound/game_win.mp3');
+const alertSound = new Audio('./sound/alert.wav');
+const carrotSound = new Audio('./sound/carrot_pull.mp3');
+const bugSound = new Audio('./sound/bug_pull.mp3');
+const redoBtn = document.querySelector('.div__result').querySelector('i');
+
 let carrotCnt = 10;
 remain.innerText = carrotCnt;
 
+let isBugClicked = false;
+let timer;
+
 headerBtn.addEventListener('click', event => {
-  bgm.play();
-  bgm.loop = true;
+  soundPlay(bgSound);
 
   if (!event.target.dataset.state) {
     init();
@@ -38,7 +47,6 @@ function handlePlayBtn() {
   }
 }
 
-let timer;
 function countDown(remainTime) {
   const timer_display = document.querySelector('.timer-display');
   timer_display.innerText = `${remainTime}`;
@@ -91,22 +99,30 @@ function makeTarget() {
     carrotTarget.style.transform = `translate(${randomX}px, ${randomY}px)`;
     main.appendChild(carrotTarget);
   }
+
+  // function addItem(count, className, imgPath) {
+  //   for (let i = 0; i < count; i++) {
+  //     const item = document.createElement('img');
+  //     item.setAttribute('class', className);
+  //     item.setAttribute('src', imgPath);
+  //     let randomX = Math.floor(Math.random() * 760);
+  //     let randomY = Math.floor(Math.random() * 185);
+  //     item.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  //     main.appendChild(item);
+  //   }
+  // }
 }
 
-let isBugClicked = false;
 main.addEventListener('click', event => {
   const bug = event.target.dataset.bug;
   const carrot = event.target.dataset.carrot;
-  const audio_bug = new Audio('./sound/bug_pull.mp3');
-  const audio_carrot = new Audio('./sound/carrot_pull.mp3');
   if (bug) {
     showResult('lose', carrotCnt);
     handlePlayBtn();
-    audio_bug.play();
-    bgm.pause();
+    soundPlay(bugSound);
     isBugClicked = true;
   } else if (carrot) {
-    audio_carrot.play();
+    soundPlay(carrotSound);
     carrotCnt--;
     remain.innerText = carrotCnt;
     const clickedCarrot = document.querySelector(
@@ -126,21 +142,21 @@ function showResult(result, carrotCnt) {
   headerBtn.style.visibility = 'hidden';
   resultBox.style.visibility = 'visible';
   main.style.pointerEvents = 'none';
+
+  soundStop(bgSound);
   if (result === 'lose') {
     resultMessage.innerText = `🤣 ${carrotCnt} carrots left 😝
     ${'\u00a0\u00a0\u00a0\u00a0'}YOU LOST 👎`;
     return;
   } else if (result === 'win') {
-    const audio_win = new Audio('./sound/game_win.mp3');
-    audio_win.play();
-    bgm.pause();
+    soundPlay(winSound);
+    soundStop(bgSound);
     resultMessage.innerText = `🎉You found all the carrots🎉  
     ${'\u00a0\u00a0\u00a0'} YOU WON ! 👍`; //공백처리
     return;
   } else if (result === 'retry') {
-    bgm.pause();
-    const audio_alert = new Audio('./sound/alert.wav');
-    audio_alert.play();
+    soundStop(bgSound);
+    soundPlay(alertSound);
     resultMessage.innerText = `🧡
     RETRY?`;
     return;
@@ -154,9 +170,17 @@ function init() {
   makeTarget();
 }
 
-const redoBtn = document.querySelector('.div__result').querySelector('i');
 redoBtn.addEventListener('click', event => {
   resultBox.style.visibility = 'hidden';
-  bgm.play();
+  soundPlay(bgSound);
   init();
 });
+
+function soundPlay(sound) {
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function soundStop(sound) {
+  sound.pause();
+}
