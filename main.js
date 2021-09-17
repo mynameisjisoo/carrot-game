@@ -28,7 +28,7 @@ headerBtn.addEventListener('click', event => {
   } else if (btnState === 'pause') {
     clearInterval(timer);
     handlePlayBtn();
-    showResult('retry');
+    finishGame('retry');
   } else if (btnState === 'play') {
     clearInterval(timer);
     handlePlayBtn();
@@ -55,7 +55,7 @@ function countDown(remainTime) {
     if (remainTime === 0 || carrotCnt === 0 || isBugClicked) {
       isBugClicked = false;
       clearInterval(timer); //함수 멈춤
-      if (carrotCnt != 0) showResult('lose', carrotCnt);
+      if (carrotCnt != 0) finishGame('lose', carrotCnt);
       return;
     }
     remainTime--;
@@ -91,7 +91,7 @@ function addItem(count, className, imgPath) {
 main.addEventListener('click', event => {
   const target = event.target;
   if (target.matches('.bug')) {
-    showResult('lose', carrotCnt);
+    finishGame('lose', carrotCnt);
     handlePlayBtn();
     soundPlay(bugSound);
     isBugClicked = true;
@@ -102,12 +102,12 @@ main.addEventListener('click', event => {
     target.remove();
     if (carrotCnt === 0) {
       handlePlayBtn();
-      showResult('win', carrotCnt);
+      finishGame('win', carrotCnt);
     }
   }
 });
 
-function showResult(result, carrotCnt) {
+function finishGame(result, carrotCnt) {
   const resultMessage = document.querySelector('.result-message');
   headerBtn.style.visibility = 'hidden';
   resultBox.style.visibility = 'visible';
@@ -132,6 +132,7 @@ function showResult(result, carrotCnt) {
     return;
   }
 }
+
 function init() {
   headerBtn.style.visibility = 'visible';
   main.style.pointerEvents = 'auto';
