@@ -1,4 +1,5 @@
 'use strict';
+const GAME_DURATION_SEC = 10;
 
 const section = document.querySelector('.container');
 const main = document.querySelector('.main');
@@ -6,13 +7,13 @@ const headerBtn = document.querySelector('.header__button');
 const headerTimer = document.querySelector('.header__timer');
 const remain = document.querySelector('.header__remain');
 const resultBox = document.querySelector('.div__result');
+const redoBtn = document.querySelector('.div__result').querySelector('i');
 
 const bgSound = new Audio('./sound/bg.mp3');
 const winSound = new Audio('./sound/game_win.mp3');
 const alertSound = new Audio('./sound/alert.wav');
 const carrotSound = new Audio('./sound/carrot_pull.mp3');
 const bugSound = new Audio('./sound/bug_pull.mp3');
-const redoBtn = document.querySelector('.div__result').querySelector('i');
 
 let carrotCnt = 10;
 remain.innerText = carrotCnt;
@@ -47,7 +48,8 @@ function handlePlayBtn() {
   }
 }
 
-function countDown(remainTime) {
+function countDown(GAME_DURATION_SEC) {
+  let remainTime = GAME_DURATION_SEC;
   const timer_display = document.querySelector('.timer-display');
   timer_display.innerText = `${remainTime}`;
 
@@ -81,6 +83,7 @@ function addItem(count, className, imgPath) {
     const item = document.createElement('img');
     item.setAttribute('class', className);
     item.setAttribute('src', imgPath);
+    const CARROT_SIZE = 80;
     let randomX = Math.floor(Math.random() * 760);
     let randomY = Math.floor(Math.random() * 185);
     item.style.transform = `translate(${randomX}px, ${randomY}px)`;
@@ -136,7 +139,7 @@ function finishGame(result, carrotCnt) {
 function init() {
   headerBtn.style.visibility = 'visible';
   main.style.pointerEvents = 'auto';
-  countDown(10);
+  countDown(GAME_DURATION_SEC);
   handlePlayBtn();
   makeTarget();
 }
