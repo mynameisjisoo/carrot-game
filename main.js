@@ -136,6 +136,15 @@ function finishGame(result, carrotCnt) {
   }
 }
 
+function soundPlay(sound) {
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function soundStop(sound) {
+  sound.pause();
+}
+
 function init() {
   headerBtn.style.visibility = 'visible';
   main.style.pointerEvents = 'auto';
@@ -149,12 +158,3 @@ redoBtn.addEventListener('click', event => {
   soundPlay(bgSound);
   init();
 });
-
-function soundPlay(sound) {
-  sound.currentTime = 0;
-  sound.play();
-}
-
-function soundStop(sound) {
-  sound.pause();
-}

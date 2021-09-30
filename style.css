@@ -1,9 +1,19 @@
+:root {
+  /* color */
+  --backgound-color: black;
+  --button-color: beige;
+  --border-color: orange;
+
+  /* size */
+  --size-border-radius: 10px;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: black;
+  background-color: var(--backgound-color);
   font-family: fantasy;
 }
 
@@ -28,24 +38,24 @@ body {
   font-size: 28px;
   width: 60px;
   padding: 10px;
-  background-color: beige;
-  color: orange;
-  border: solid orange 5px;
-  border-radius: 10px;
+  background-color: var(--button-color);
+  color: var(--border-color);
+  border: solid var(--border-color) 5px;
+  border-radius: var(--size-border-radius);
   cursor: pointer;
 }
 
 .header__timer {
   font-size: 25px;
-  background-color: beige;
+  background-color: var(--button-color);
   padding: 10px 10px;
   margin: 10px 15px;
-  border: orange solid 5px;
-  border-radius: 10px;
+  border: var(--border-color) solid 5px;
+  border-radius: var(--size-border-radius);
 }
 
 .header__timer i {
-  color: orange;
+  color: var(--border-color);
   margin-right: 10px;
 }
 .timer-display {
@@ -55,9 +65,9 @@ body {
 
 .header__remain {
   padding: 10px;
-  background-color: beige;
-  border: solid orange 5px;
-  border-radius: 10px;
+  background-color: var(--button-color);
+  border: solid var(--border-color) 5px;
+  border-radius: var(--size-border-radius);
 }
 
 .main {
@@ -85,17 +95,17 @@ body {
   width: 500px;
   height: 200px;
   background: rgba(240, 196, 140, 0.8);
-  border-radius: 20px;
+  border-radius: var(--size-border-radius);
 }
 
 .div__result i {
   margin: 15px 0px 15px 0px;
   opacity: 1;
   font-size: 35px;
-  background-color: beige;
+  background-color: var(--button-color);
   padding: 5px;
-  border: 5px solid orange;
-  border-radius: 10px;
+  border: 5px solid var(--border-color);
+  border-radius: var(--size-border-radius);
   cursor: pointer;
 }
 
